@@ -110,13 +110,21 @@ class FormStore {
     }
 }
 
-export default function useForm() {
+export default function useForm(form) {
     // 存值，在组件卸载之前指向的都是同一个值
     const formRef = useRef()
 
     if (!formRef.current) {
-        const formStore = new FormStore()
-        formRef.current = formStore.getForm()
+        // 函数组件
+        if (form) {
+            formRef.current = form
+        }
+        // 类组件
+        else {
+            const formStore = new FormStore()
+            formRef.current = formStore.getForm()
+        }
+        
     }
 
     return [formRef.current ]
